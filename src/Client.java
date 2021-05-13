@@ -118,7 +118,8 @@ public class Client extends javax.swing.JFrame {
             
             panel.removeAll();
             ChatPanel chatPanel = new ChatPanel(socket, name, "Manager");
-            panel.add(chatPanel);
+            panel.add("Manager",chatPanel);
+            
             panel.updateUI();
             
             Thread t=new Thread(chatPanel);

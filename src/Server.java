@@ -178,6 +178,7 @@ public class Server extends javax.swing.JFrame implements Runnable{
 
     @Override
     public void run() {
+        while(true)
         try {
 		Socket staffSocket = socket.accept();
 		if (staffSocket != null) {
