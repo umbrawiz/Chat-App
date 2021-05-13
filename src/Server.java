@@ -181,7 +181,6 @@ public class Server extends javax.swing.JFrame implements Runnable{
         while(true)
         try {
 		Socket staffSocket = socket.accept();
-		if (staffSocket != null) {
 		    br = new BufferedReader(new InputStreamReader(staffSocket.getInputStream()));
 		    String staffName = br.readLine();
 		    staffName = staffName.substring(0, staffName.indexOf(":"));
@@ -192,7 +191,6 @@ public class Server extends javax.swing.JFrame implements Runnable{
 
 		    Thread t = new Thread(chatPanel);
 		    t.start();
-		}
 
 	    } catch (Exception e) {
 		// Do not change this because it spawn try-catch many time while running thread!

@@ -20,11 +20,18 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
      * Creates new form ChatPanel
      */
     
-        Socket socket = null;
+    Socket socket = null;
     String sender;
     String receiver;
     BufferedReader bf = null;
     DataOutputStream os = null;
+    
+    public void clickforme(){
+        if (history_area.getText().isEmpty()) {
+            chat_area.setText("Welcome to my WORLD");
+            jButton1.doClick();
+        }
+    }
     
     public ChatPanel(Socket s, String sender, String receiver) throws IOException {
         initComponents();
@@ -37,6 +44,7 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
 	    //Tạo các bộ đệm để gửi và nhận tin nhắn
 	    bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    os = new DataOutputStream(socket.getOutputStream());
+     
 
     }
 
@@ -62,6 +70,11 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
                 jButton1MouseClicked(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("HISTORY");
 
@@ -72,6 +85,7 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
         history_area.setColumns(20);
         history_area.setRows(5);
         jScrollPane3.setViewportView(history_area);
+        history_area.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -104,7 +118,25 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        if (chat_area.getText().isEmpty()) return;
+     
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+         if (chat_area.getText().isEmpty()) return;
+        
+        if (history_area.getText().isEmpty()) {
+            try {
+                os.writeBytes(sender + ": " + chat_area.getText() + '\n');
+                os.flush();
+                history_area.append("Welcome to my WORLD" + "\n");
+		chat_area.setText("");
+            } catch (IOException ex) {
+                Logger.getLogger(ChatPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        else{
             try {
                 os.writeBytes(sender + ": " + chat_area.getText() + '\n');
                 os.flush();
@@ -113,7 +145,8 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
             } catch (IOException ex) {
                 Logger.getLogger(ChatPanel.class.getName()).log(Level.SEVERE, null, ex);
             }
-    }//GEN-LAST:event_jButton1MouseClicked
+            }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -141,4 +174,6 @@ public class ChatPanel extends javax.swing.JPanel implements Runnable{
 	    }
 	}
     }
+    
+
 }
