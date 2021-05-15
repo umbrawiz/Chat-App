@@ -51,10 +51,18 @@ public class Server extends javax.swing.JFrame implements Runnable{
         portField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         tabbedPane = new javax.swing.JTabbedPane();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("  PORT");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText(" PORT");
+
+        portField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                portFieldActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("START");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -66,19 +74,24 @@ public class Server extends javax.swing.JFrame implements Runnable{
         tabbedPane.setBackground(new java.awt.Color(204, 255, 255));
         tabbedPane.setForeground(new java.awt.Color(204, 204, 255));
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Choose the port to start the server");
+        tabbedPane.addTab("", jLabel2);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
+                .addGap(165, 165, 165)
+                .addComponent(jLabel1)
+                .addGap(28, 28, 28)
+                .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -87,12 +100,15 @@ public class Server extends javax.swing.JFrame implements Runnable{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                    .addComponent(portField, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(portField))
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -111,7 +127,9 @@ public class Server extends javax.swing.JFrame implements Runnable{
                 socket = new ServerSocket(port);
                 	JOptionPane.showMessageDialog(contentPane, "Server is running at port: " + port, "Started server",
 			                JOptionPane.INFORMATION_MESSAGE);
+                        tabbedPane.remove(0);
                         tabbedPane.addTab(null, null, getLblNewLabel_2(), null);
+                        tabbedPane.setTitleAt(0, "Waiting");
             } catch (Exception e) { 
 		
             }
@@ -120,6 +138,10 @@ public class Server extends javax.swing.JFrame implements Runnable{
         t.start();
 
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void portFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_portFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,6 +194,7 @@ public class Server extends javax.swing.JFrame implements Runnable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField portField;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
@@ -184,8 +207,11 @@ public class Server extends javax.swing.JFrame implements Runnable{
 		    br = new BufferedReader(new InputStreamReader(staffSocket.getInputStream()));
 		    String staffName = br.readLine();
 		    staffName = staffName.substring(0, staffName.indexOf(":"));
-
+                    
 		    ChatPanel chatPanel = new ChatPanel(staffSocket, "Manager", staffName);
+                    tabbedPane.remove(0);
+                    JOptionPane.showMessageDialog(contentPane, "Connected to " + staffName, "Started server",
+			                JOptionPane.INFORMATION_MESSAGE);
 		    tabbedPane.add(staffName, chatPanel);
 		    chatPanel.updateUI();
 
